@@ -2,7 +2,7 @@
 FROM alpine:3.18
 
 # RUN 커맨드로 mysql관련 파일들 받기
-RUN apk update && apk add --no-cache mariadb mariadb-client mariadb-server-utils \
+RUN apk update && apk add --no-cache mariadb mariadb-client mariadb-server-utils openrc\
 	&& addgroup mysql mysql \
 	&& mkdir /scripts
 
@@ -26,8 +26,9 @@ EXPOSE 3306
 # MariaDB 초기화 및 실행 스크립트 실행
 COPY ./entrypoint.sh /usr/local/bin/
 COPY ./scripts/init-db.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/init-db.sh
+RUN chmod -R 777 /etc/mysql/mariadb.conf.d/my.cnf
+RUN chmod -R 777 /usr/local/bin/entrypoint.sh
+RUN chmod -R 777 /usr/local/bin/init-db.sh
 ENTRYPOINT [ "entrypoint.sh" ]
 
 # 이 상태 확인은 실패 시 컨테이너가 다시 시작되도록 하는데 도움이 됩니다.

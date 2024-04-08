@@ -12,5 +12,7 @@ fi
 
 cd /usr/local/bin
 
+chmod -R 777 /var/lib/mysql
+
 echo "Starting MariaDB server..."
-./init-db.sh
+exec ./init-db.sh
