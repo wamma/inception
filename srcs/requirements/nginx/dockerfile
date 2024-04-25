@@ -1,17 +1,20 @@
 # Alpine Linux를 베이스 이미지로 사용
 FROM alpine:3.18
 
-# NGINX 설치
-RUN apk add --update nginx openssl && \
-rm -rf /var/cache/apk/* && \
-mkdir -p /run/nginx
+# NGINX, OpenSSL 설치
+RUN apk update && apk add --no-cache nginx openssl
 
-# 호스트 시스템의 NGINX 설정 파일과 웹 콘텐츠를 컨테이너로 복사
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY www /var/www
+# Nginx 설정 파일 복사
+COPY ./tools/nginx.conf /etc/nginx/nginx.conf
 
-# 컨테이너가 443번 포트를 사용
+# 자체 서명된 SSL 인증서 생성(2048비트 RSA 키와 함께)
+RUN mkdir -p /etc/nginx/ssl && \
+	openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+	-keyout /etc/nginx/ssl/key.pem \
+	-out /etc/nginx/ssl/cert.pem \
+	-subj "/C=JP/ST=Tokyo/L=Minato/O=SONY, Inc./CN=sony.com"
+
 EXPOSE 443
 
-# NGINX 실행
-CMD ["./init.sh"]
+# Nginx 실행
+CMD ["nginx", "-g", "daemon off;"]
