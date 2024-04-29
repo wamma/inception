@@ -2,18 +2,18 @@ FROM alpine:3.18
 
 # 패키지 리스트를 업데이트하고 필요한 패키지 설치
 RUN apk update && apk add --no-cache \
-    php8 \
-    php8-fpm \
-    php8-opcache \
-    php8-mysqli \
-    php8-json \
-    php8-openssl \
-    php8-curl \
-    php8-mbstring \
-    php8-phar \
-    php8-xml \
-    php8-iconv \
-    php8-dom \
+    php \
+    php-fpm \
+    php-mysqli \
+    php-json \
+    php-openssl \
+    php-curl \
+    php-mbstring \
+    php-xml \
+    php-phar \
+    php-iconv \
+    php-opcache \
+    php-dom \
     curl \
 	dumb-init
 
@@ -35,7 +35,7 @@ COPY ./tools/entrypoint.sh /usr/local/bin/entrypoint
 
 # 스크립트 권한 설정
 RUN chmod +x /usr/local/bin/wp-config /usr/local/bin/entrypoint
-RUN chmod +x /usr/bin/wp-config
+RUN chmod +x /usr/local/bin/wp-config
 
 # WordPress 파일 및 데이터베이스를 위한 볼륨 설정
 VOLUME ["/var/www/html", "/var/lib/mysql"]

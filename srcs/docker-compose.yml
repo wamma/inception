@@ -1,12 +1,14 @@
 version: '3'
 services:
-
   mariadb:
     container_name: mariadb
     image: mariadb:hyungjup # 태그 latest로 안나오게 하기
+    build:
+      context: ./requirements/mariadb
+      dockerfile: Dockerfile
     env_file:
       - .env
-    network:
+    networks:
       - docker-network
     volumes:
       - db_data:/var/lib/mysql
@@ -15,28 +17,46 @@ services:
     restart: always # MariaDB 서버가 충돌나면 자동으로 재시작
   
   wordpress:
+    container_name: wordpress
     image: wordpress:hyungjup
+    build:
+      context: ./requirements/wordpress
+      dockerfile: Dockerfile
     depends_on:
-      - mariadb:
-        condition: service_healthy
+      - mariadb
     env_file:
       - .env
-    network:
+    networks:
       - docker-network
     volumes:
       - wp_data:/var/www/html
     ports:
-      - "9000"
+      - "9000:9000"
 
   nginx:
     container_name: nginx
     image: nginx:hyungjup
+    build:
+      context: ./requirements/nginx
+      dockerfile: Dockerfile
     env_file:
       - .env
-    network:
+    networks:
       - docker-network
     ports:
       - "443:443"
     volumes:
       - wordpress_files:/var/www/wordpress # WordPress 파일 볼륨
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf # Nginx 설정 파일
+
+volumes:
+  db_data:
+    driver: local
+  wp_data:
+    driver: local
+  wordpress_files:
+    driver: local
+
+networks:
+  docker-network:
+    driver: bridge
