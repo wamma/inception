@@ -35,7 +35,7 @@ COPY ./tools/entrypoint.sh /usr/local/bin/entrypoint
 
 # 스크립트 권한 설정
 RUN chmod +x /usr/local/bin/wp-config /usr/local/bin/entrypoint
-RUN chmod +x /usr/local/bin/wp-config
+# RUN chmod +x /usr/local/bin/wp-config
 
 # WordPress 파일 및 데이터베이스를 위한 볼륨 설정
 VOLUME ["/var/www/html", "/var/lib/mysql"]
