@@ -1,5 +1,4 @@
-# Alpine 버전 설정
-FROM alpine:3.18
+FROM alpine:3.20.1
 
 # RUN 커맨드로 mysql관련 파일들 받기
 RUN apk update && apk add --no-cache \
@@ -10,9 +9,6 @@ RUN apk update && apk add --no-cache \
     && (getent group mysql || addgroup mysql) \
     && (id mysql || adduser -D -G mysql mysql) \
     && mkdir /scripts
-
-# 환경변수 설정
-ENV MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
 
 # 초기 스크립트 복사(이 스크립트는 컨테이너 시작 시 MariaDB를 초기화합니다.)
 COPY ./tools/*.sh /scripts/

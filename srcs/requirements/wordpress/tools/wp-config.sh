@@ -1,8 +1,5 @@
 #!/bin/sh
 
-# wp-config.php 파일 생성
-#!/bin/sh
-
 # wp-config.php 파일이 이미 있는지 체크
 if [ ! -f "/wordpress/wp-config.php" ]; then
 	wp config create --dbname=$MYSQL_DATABASE --dbuser=$MYSQL_USER --dbpass=$MYSQL_PASSWORD --dbhost=$DB_HOST --path=/wordpress --allow-root --skip-check

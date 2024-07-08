@@ -8,12 +8,12 @@ run:
 
 # Access the MySQL command line inside the container
 exec:
-	$(eval CONTAINER_ID=$(shell docker ps --format "{{.ID}}" --filter "name=mymysql" | head -c 3))
+	$(eval CONTAINER_ID=$(shell docker ps --format "{{.ID}}" --filter "name=mymysql"))
 	@echo "Connecting to container $(CONTAINER_ID)"
 	docker exec -it $(CONTAINER_ID) mysql -u root -p
 
 stop:
-	$(eval CONTAINER_ID=$(shell docker ps --format "{{.ID}}" --filter "name=mymysql" | head -c 3))
+	$(eval CONTAINER_ID=$(shell docker ps --format "{{.ID}}" --filter "name=mymysql"))
 	@echo "Stopping container $(CONTAINER_ID)"
 	docker stop $(CONTAINER_ID)
 

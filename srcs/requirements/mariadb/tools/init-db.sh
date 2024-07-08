@@ -17,14 +17,21 @@ done
 echo "MariaDB is ready."
 
 # 데이터베이스가 이미 존재하는지 확인
-RESULT=`mysql -u root -e "SHOW DATABASES LIKE '$MYSQL_DATABASE';"`
-if [ "$RESULT" == "" ]; then
+# RESULT=`mysql -u root -e "SHOW DATABASES LIKE '$MYSQL_DATABASE';"`
+RESULT=$(mysql -u root -e "SHOW DATABASES LIKE '$MYSQL_DATABASE';")
+# if [ "$RESULT" == "" ]; then
+if [ -z "$RESULT" ]; then
     # 데이터베이스 생성
-    mysql -u root -e "CREATE DATABASE IF NOT EXISTS $MYSQL_DATABASE;"
+    # mysql -u root -e "CREATE DATABASE IF NOT EXISTS $MYSQL_DATABASE;"
+    mysql -u root -e "CREATE DATABASE IF NOT EXISTS \`$MYSQL_DATABASE\`;"
+
+    mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';"
 
     # 사용자 생성 및 권한 부여
-    mysql -u root -e "CREATE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';"
-    mysql -u root -e "GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;"
+    # mysql -u root -e "CREATE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';"
+    # mysql -u root -e "GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;"
+    mysql -u root -p"$MYSQL_ROOT_PASSWORD" -e "CREATE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';"
+    mysql -u root -p"$MYSQL_ROOT_PASSWORD" -e "GRANT ALL PRIVILEGES ON \`$MYSQL_DATABASE\`.* TO '$MYSQL_USER'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;"
 else
     echo "Database and user already exist."
 fi
