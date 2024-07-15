@@ -1,12 +1,11 @@
 FROM debian:bullseye
 
-CMD ["/script.sh"]
-
 RUN apt-get update && \
-apt-get install mariadb-server -y && \
-apt-get install mariadb-client -y
+    apt-get install -y mariadb-server mariadb-client && \
+    rm -rf /var/lib/apt/lists/*
 
 COPY script.sh /
 
 RUN chmod +x /script.sh
 
+CMD ["/script.sh"]
