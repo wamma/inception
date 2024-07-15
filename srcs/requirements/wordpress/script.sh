@@ -13,22 +13,22 @@ if [ ! -f /usr/local/bin/wp ]; then
     wp core download --allow-root
     # wp-config.php 파일 생성
     wp config create \
-        --dbname=$MYSQL_DATABASE \
-        --dbuser=$MYSQL_USER \
-        --dbpass=$MYSQL_PASSWORD \
+        --dbname="$MYSQL_DATABASE" \
+        --dbuser="$MYSQL_USER" \
+        --dbpass="$MYSQL_PASSWORD" \
         --dbhost=mariadb \
         --allow-root
     # WordPress 핵심 설치
     wp core install \
-        --url=$WP_URL \
+        --url="$WP_URL" \
         --title="$WP_TITLE" \
-        --admin_user=$WP_ADMIN_USERNAME \
-        --admin_password=$WP_ADMIN_PASSWORD \
-        --admin_email=$WP_ADMIN_EMAIL \
+        --admin_user="$WP_ADMIN_USERNAME" \
+        --admin_password="$WP_ADMIN_PASSWORD" \
+        --admin_email="$WP_ADMIN_EMAIL" \
         --skip-email \
         --allow-root
     # 추가 사용자 생성
-    wp user create $USER1 $USER1_EMAIL --user_pass=$PASS1 --allow-root
+    wp user create "$USER1" "$USER1_EMAIL" --user_pass="$PASS1" --allow-root
 fi
 
 # 디렉토리 권한 설정
