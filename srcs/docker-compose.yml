@@ -57,9 +57,17 @@ volumes:
   db-vol:
     name: db-vol
     driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/hyungjup/data/db
   wp-vol:
     name: wp-vol
     driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/hyungjup/data/wp
 
 networks:
   intra:

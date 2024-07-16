@@ -1,8 +1,8 @@
 FROM debian:bullseye
 
 RUN apt-get update && \
-    apt-get install -y mariadb-server mariadb-client && \
-    rm -rf /var/lib/apt/lists/*
+apt-get install mariadb-server -y && \
+apt-get install mariadb-client -y
 
 COPY script.sh /
 

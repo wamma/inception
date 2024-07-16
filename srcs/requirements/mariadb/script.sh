@@ -37,32 +37,3 @@ echo "MariaDB configuration completed."
 
 # 마리아DB 서버 실행 계속 유지
 wait
-
-
-# #!/bin/sh
-
-# service mariadb start
-
-# sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mysql/mariadb.conf.d/50-server.cnf
-
-# sleep 1
-
-# # root 사용자 재설정
-# mysql -u root <<-EOSQL
-#     DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
-#     ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';
-#     FLUSH PRIVILEGES;
-# EOSQL
-
-# cat <<EOF > db.sql
-# CREATE DATABASE IF NOT EXISTS $MYSQL_DATABASE;
-# CREATE USER IF NOT EXISTS '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';
-# GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%';
-# FLUSH PRIVILEGES;
-# EOF
-
-# mysql -u root -p"$MYSQL_ROOT_PASSWORD" < db.sql
-
-# service mariadb stop
-
-# exec mysqld_safe
